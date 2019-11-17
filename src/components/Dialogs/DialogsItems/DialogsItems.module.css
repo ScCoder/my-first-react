@@ -1,0 +1,18 @@
+
+.dialog{
+    color: yellow;
+}
+
+.dialogAcive{
+    color: yellow;
+    background-color: red;
+}
+.avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+
+}.dialogs_items{
+    padding: 10px;
+}
+

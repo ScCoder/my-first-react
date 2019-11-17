@@ -1,0 +1,5 @@
+.dialogs{
+    display: grid;
+    grid-template-columns: 3fr 6fr;
+    background-color: rgb(38, 14, 179);
+}

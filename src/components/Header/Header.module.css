@@ -1,0 +1,13 @@
+.header{
+    grid-area: h;
+    background-color: chartreuse;
+  }
+  
+  .loginLink{
+    float: right;
+  }
+
+  .loginName{
+    float: right;
+    color: azure;
+  }

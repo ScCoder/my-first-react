@@ -1,0 +1,10 @@
+.posts{
+    padding: 10px;
+    background-color: aqua;
+}
+
+.avatar{
+    width: 30px;
+    height: 30px;
+    border-radius: 15px;
+}

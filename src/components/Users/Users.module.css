@@ -1,0 +1,6 @@
+.selected{
+    background-color: gold;
+}
+.notselected{
+    background-color:rgb(189, 46, 46);
+}
