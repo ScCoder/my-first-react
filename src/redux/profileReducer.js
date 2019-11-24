@@ -77,8 +77,8 @@ export const SaveProfileThunk = (profile) => {
         if (data.resultCode === 0){
            dispath(GetProfileThunk(getState().auth.userId));     
         }else{
-            //dispath(stopSubmit('profileData',{_error:data.messages[0]}));
-            dispath(stopSubmit('profileData',{'contacts':{'facebook':data.messages[0]}}));
+            let errors = parseErrors(data);
+            dispath(stopSubmit('profileData',errors));
         }
         
         
@@ -141,3 +141,30 @@ const profileReducer = (state = initialState, action) => {
 }
 
 export default profileReducer;
+
+function parseErrors(data) {
+    const INVALID_URL_FORMAT = 'Invalid url format';
+    const FIELD_IS_REQUIRED = 'field is required';
+    let contactsErrors = {};
+    let errors = {};
+    data.messages.forEach(errorMessage => {
+        if (errorMessage.indexOf(INVALID_URL_FORMAT) >= 0) {
+            const contactsIndex = errorMessage.indexOf('Contacts->');
+            if (contactsIndex >= 0) {
+                const startNameIndex = contactsIndex + 'Contacts->'.length;
+                const endNameIndex = errorMessage.indexOf(')', startNameIndex);
+                const nameOfContact = errorMessage.slice(startNameIndex, endNameIndex).toLowerCase();
+                contactsErrors[nameOfContact] = INVALID_URL_FORMAT;
+            }
+        }
+        if (errorMessage.indexOf(FIELD_IS_REQUIRED) >= 0) {
+            const startNameIndex = errorMessage.indexOf('(') + 1;
+            const endNameIndex = errorMessage.indexOf(')', startNameIndex);
+            const nameOfFieldUpperFirst = errorMessage.slice(startNameIndex, endNameIndex);
+            const nameOfField = nameOfFieldUpperFirst.charAt(0).toLowerCase() + nameOfFieldUpperFirst.slice(1);
+            errors[nameOfField] = FIELD_IS_REQUIRED;
+        }
+    });
+    errors['contacts'] = contactsErrors;
+    return errors;
+}

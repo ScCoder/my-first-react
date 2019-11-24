@@ -121,7 +121,7 @@ const ProfileDataEditForm = ({profile,error,...props})=>{
                 <Field name="aboutMe" placeholder='Обо мне' component={Input} validate = {[required]} />
             </div>            
             <div>
-                <Field name="fullName" placeholder='Полное имя' component={Input} validate = {[required]} />
+                <Field name="fullName" placeholder='Полное имя' component={Input}/>
             </div>
             <div>
                 <Field name="lookingForAJob" type='checkbox' component='input'/>
