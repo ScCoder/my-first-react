@@ -1,6 +1,7 @@
 import React from 'react';
 import Users from './Users';
-import { connect } from 'react-redux';
+import { connect} from 'react-redux';
+import {compose} from 'redux';
 import {GetUsersThunk,FollowThunk} from '../../redux/usersReducer';
 import Preloader from '../Common/Preloader';
 import {withRouter} from 'react-router';
@@ -33,6 +34,7 @@ class UsersContainer extends React.Component {
             currentPageInURL = {this.props.match.params.currentPageInURL}
             followedInProgressUsers = {this.props.followedInProgressUsers}
             FollowThunk = {this.props.FollowThunk} Test = {this.props.Test}
+            history = {this.props.history}
             />
         </div>
     }
@@ -63,4 +65,8 @@ const mdtp = (dispatch) =>{
     }
 }
 
-export default connect(mstp,{FollowThunk,GetUsersThunk})(withAuthRedirect(withRouter(UsersContainer)));
+export default compose(
+    connect(mstp,{FollowThunk,GetUsersThunk}),
+    withAuthRedirect,
+    withRouter)
+    (UsersContainer);

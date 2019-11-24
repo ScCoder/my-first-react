@@ -5,20 +5,22 @@ import { minLengthValidatorCreator, required } from '../../utils/validators/vali
 import { connect } from 'react-redux';
 import {LoginThunk} from '../../redux/authReducer';
 import {Redirect} from 'react-router-dom';
+import Error from '../Common/Error';
 
 const minLength5 = minLengthValidatorCreator(5);
 
-const LoginForm = (props) => {
+const LoginForm = ({handleSubmit,error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
+            <Error error = {error} />
             <div>
                 <Field name="login" placeholder='Login' component={Input} validate = {[required]} />
             </div>
             <div>
-                <Field type = 'Password' placeholder='Password' component={Input} name='password' validate = {[required,minLength5]} />
+                <Field name='password' type = 'Password' placeholder='Password' component={Input}  validate = {[required,minLength5]} />
             </div>
             <div>
-                <Field type={'checkbox'} component='input' name='rememberMe' />Remember me
+                <Field name='rememberMe' type={'checkbox'} component='input'  />Remember me
             </div>
             <div>
                 <button>Login</button>
@@ -29,9 +31,12 @@ const LoginForm = (props) => {
     )
 }
 
+
+
+
 const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
 
-const Login = ({isAuth,LoginThunk}) => {
+const Login = ({isAuth,LoginThunk,currentUserId}) => {
 
     const onLogin = (values) =>{
 
@@ -42,7 +47,7 @@ const Login = ({isAuth,LoginThunk}) => {
 
     return (
         <div> 
-            {(isAuth) && <Redirect to='/profile'/> }
+            {(isAuth) && <Redirect to={'/profile/'+currentUserId}/> }
             
             <div>   
                 <h1>LOGIN {!isAuth && 'NOT'} {isAuth && 'TRUE'} </h1>
@@ -56,7 +61,10 @@ const Login = ({isAuth,LoginThunk}) => {
 }
 
 const mstp = (state) =>{
-    return {isAuth: state.auth.isAuth};
+    return {
+        isAuth: state.auth.isAuth,
+        currentUserId: state.auth.userId
+    };
 }
 
 export default connect(mstp,{LoginThunk})(Login);

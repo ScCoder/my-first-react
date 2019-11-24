@@ -7,7 +7,7 @@ import { TextArea } from '../../FormControls/FormControls';
 
 const Posts = ({posts,AddPost,DeletePost}) => {
 
-    let PostElements = posts.map( p => <Post message={p.message} likeCount={p.likeCount} id = {p.id} DeletePost = {DeletePost} /> )
+    let PostElements = posts.map( p => <Post key={p.id} message={p.message} likeCount={p.likeCount} id = {p.id} DeletePost = {DeletePost} /> )
 
     let onAddPost = (values) => {
         AddPost(values.postText);

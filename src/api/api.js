@@ -30,15 +30,34 @@ export const GetFollowed = (userId) =>
     return instance.get(`follow/${userId}`).then(response => {return response.data});
 }
 
-export const SaveStatus = (status) =>
-{
-    return instance.put(`/profile/status`,{status:status}).then(response => {return response.data.resultCode});
+export const ProfileApi = {
+
+    SaveStatus: (status) => {
+        return instance.put(`profile/status`, { status: status }).then(response => { return response.data.resultCode });
+    },
+
+    GetStatus: (userId) => {
+        return instance.get(`profile/status/${userId}`).then(response => { return response.data });
+    },
+    GetProfile: (userId) => {
+        return instance.get(`profile/${userId}`).then(response => { return response.data });
+    },
+    SaveProfile: (profile) => {
+        return instance.put(`profile`,profile).then(response => { return response.data });
+    },
+
+    SavePhoto: (photoFile) => {
+
+        const formData = new FormData();
+        formData.append('image', photoFile);
+        return instance.put(`profile/photo`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        }).then(response => { return response.data.resultCode });
+    }
 }
 
-export const GetStatus = (userId) =>
-{
-    return instance.get(`/profile/status/${userId}`).then(response => {return response.data});  
-}
 
 export const Auth = {
     GetUserAuth: () => {
@@ -47,10 +66,10 @@ export const Auth = {
     ,
 
     Login: (email, password, rememberMe = false) => {
-        return instance.post(`/auth/login/`, { email, password, rememberMe }).then(response => { return response.data.resultCode });
+        return instance.post(`auth/login/`, { email, password, rememberMe }).then(response => { return response.data});
     }
     ,
     LogOut: () => {
-        return instance.delete(`/auth/login/`).then(response => { return response.data.resultCode });
+        return instance.delete(`auth/login/`).then(response => { return response.data.resultCode });
     }
 }

@@ -6,7 +6,7 @@ import s from './Users.module.css';
 const Users = (props) => {
 
     let UsersElements = props.items.map(i => <User name={i.name} photos={i.photos} followed={i.followed} userId={i.id} 
-        followedInProgress={props.followedInProgressUsers.includes(i.id)} FollowThunk={props.FollowThunk} />);
+        followedInProgress={props.followedInProgressUsers.includes(i.id)} FollowThunk={props.FollowThunk} history = {props.history} />);
 
     return (
         <div>

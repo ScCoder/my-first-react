@@ -1,15 +1,19 @@
 import React from 'react';
 import s from './User.module.css';
 
-const User = ({userId,name,followed,photos,followedInProgress,FollowThunk}) => {
+const User = ({userId,name,followed,photos,followedInProgress,FollowThunk,history}) => {
 
     const OnSetFollowed = () => {
         FollowThunk(userId,!followed);
     }
 
+    const OnImageclicked = () => {
+        history.push("/profile/"+userId);
+    }
+
     return (<div>
         <div>{name}</div>
-        <div><img src={photos.large} className={s.photo} /></div>
+        <div><img src={photos.large} className={s.photo} onClick = {OnImageclicked} /></div>
         <div>
             {
                 followed

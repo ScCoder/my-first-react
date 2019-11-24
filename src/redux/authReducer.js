@@ -1,4 +1,5 @@
-import { Auth } from "../api/api";
+import { Auth } from '../api/api';
+import {stopSubmit} from 'redux-form';
 
 const SET_USER_ID = 'SET_USER_ID';
 const AUTH_IN_PROGRESS = 'AUTH_IN_PROGRESS';
@@ -24,9 +25,11 @@ export const AuthUserThunk = () => {
 
 export const LoginThunk = (email, password, rememberMe) => {
   return async (dispatch) => {
-    const resultCode = await Auth.Login(email, password, rememberMe);
-    if (resultCode === 0) {
+    const data = await Auth.Login(email, password, rememberMe);
+    if (data.resultCode === 0) {
       dispatch(AuthUserThunk());
+    }else{
+      dispatch(stopSubmit('login',{_error:data.messages[0]}));
     }
   }
 }

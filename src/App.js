@@ -40,7 +40,7 @@ const App = (props) => {
       <Header/>
       <NavBar/>
       <div className="app-wrapper-content">
-        <Route path='/profile' render = {() => <Profile/>}/>
+        <Route path='/profile/:userIdInURL?' render = {() => <Profile/>}/>
         <Route path='/dialogs/:currentDialogInURL?' render = {withSuspense(DialogsContainer)}/>
         <Route path='/users/:currentPageInURL?' render = {withSuspense(() => <UsersContainer Test={'XXX'}/>)}/>     
         <Route path='/login' render = {() => <Login/>}/>

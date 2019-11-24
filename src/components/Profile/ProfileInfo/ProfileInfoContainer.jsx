@@ -1,83 +1,23 @@
-import React , {useEffect,useState} from 'react';
+import React , {useEffect} from 'react';
 import { connect } from 'react-redux';
-import {ChangeStatus,SaveStatusThunk,GetStatusThunk} from '../../../redux/profileReducer';
+import {compose } from 'redux';
+import {ChangeStatus,SaveStatusThunk,GetStatusThunk,GetProfileThunk,SaveProfileThunk,SavePhoto} from '../../../redux/profileReducer';
 import ProfileInfo from './ProfileInfo';
+import {withRouter} from 'react-router-dom';
 
 
-// class ProfileInfoContainer extends React.Component {
+const ProfileInfoContainer = ({currentUserId,profileLoaded,...props}) => {
 
-//     componentDidMount(){
-        
-//         this.props.GetStatusThunk(this.props.userId);
-//     }
-
-//     componentDidUpdate(prevProps){
-//         if (this.props.userId != prevProps.userId) {
-//             this.props.GetStatusThunk(this.props.userId);
-//         }
-//     }
-
-//     state = {
-//         editMode:false
-//     }
-
-
-//     ActivateEditMode=()=>{
-//         this.setState({editMode:true});
-//     }
-
-//     DeactivateEditMode=()=>{
-//         this.setState({editMode:false});
-//         this.props.SaveStatusThunk(this.props.status);
-//     }
-
-//     onStatusChange=(e)=>{
-//         this.props.ChangeStatus(e.target.value);
-//     }
-
-
-//     render() {
-//         return (
-//             <div>
-                
-
-//                 <ProfileInfo status={this.props.status} editMode={this.state.editMode} ActivateEditMode={this.ActivateEditMode}
-//                     DeactivateEditMode={this.DeactivateEditMode} onStatusChange={this.onStatusChange} />
-
-//             </div>
-//         )
-
-//     }
-
-// }
-
-
-const ProfileInfoContainer = ({userId,...props}) => {
-
-    const [editMode, setEditMode] = useState(false);
-
-    useEffect(()=>{    
-        props.GetStatusThunk(userId); 
-    },[userId])
-
-    const ActivateEditMode = () => {
-        setEditMode(true);
-    }
-
-    const DeactivateEditMode = () => {
-        setEditMode(false);
-        props.SaveStatusThunk(props.status);
-    }
-
-    const onStatusChange = (e) => {
-        props.ChangeStatus(e.target.value);
-    }
+    const userIdInURL = props.match.params.userIdInURL;
+   
+    useEffect(()=>{               
+        props.GetProfileThunk(userIdInURL);  
+        window.scrollTo(0,0);              
+    },[userIdInURL])
 
     return (
         <div>
-            {props.status && <ProfileInfo status={props.status} editMode={editMode} ActivateEditMode={ActivateEditMode}
-                DeactivateEditMode={DeactivateEditMode} onStatusChange={onStatusChange} />}
-
+            {profileLoaded&&<ProfileInfo userIdInURL = {userIdInURL} isCurrentUser = {userIdInURL == currentUserId} {...props}/>}
         </div>
     )
 
@@ -86,8 +26,15 @@ const ProfileInfoContainer = ({userId,...props}) => {
 const mstp = (state)=>{
     return {
         status: state.profilePage.status,
-        userId: state.auth.userId
+        currentUserId: state.auth.userId,
+        profile: state.profilePage.profile,
+        profileLoaded: state.profilePage.profileLoaded
     }
 }
 
-export default connect(mstp,{ChangeStatus,SaveStatusThunk,GetStatusThunk})(ProfileInfoContainer);
+export default compose(
+    connect(mstp,{ChangeStatus,SaveStatusThunk,GetStatusThunk,GetProfileThunk,SaveProfileThunk,SavePhoto}),
+    withRouter
+    )
+    (ProfileInfoContainer)
+

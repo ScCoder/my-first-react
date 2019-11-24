@@ -3,7 +3,7 @@ import Frend from './Frend/Frend';
 
 const Frends = (props) => {
 
-    let frendsElements = props.frends.map(f => <Frend state={f} />);
+    let frendsElements = props.frends.map(f => <Frend key={f.id} state={f} />);
 
     return (
         <div>
