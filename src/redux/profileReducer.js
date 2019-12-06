@@ -64,7 +64,6 @@ export const GetProfileThunk = (userId) => {
     return async (dispath) => {
         dispath(SetProfileLoaded(false));
         const profile = await ProfileApi.GetProfile(userId);
-        debugger;
         dispath(ChangeProfile(profile));
         dispath(SetProfileLoaded(true));
     }

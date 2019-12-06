@@ -62,14 +62,18 @@ export const ProfileApi = {
 export const Auth = {
     GetUserAuth: () => {
         return instance.get(`auth/me`).then(response => { return response.data });
-    }
-    ,
+    },
 
-    Login: (email, password, rememberMe = false) => {
-        return instance.post(`auth/login/`, { email, password, rememberMe }).then(response => { return response.data});
-    }
-    ,
+    Login: (email, password, rememberMe = false,captcha = null) => {
+        return instance.post(`auth/login/`, { email, password, rememberMe,captcha}).then(response => { return response.data});
+    },
+
     LogOut: () => {
         return instance.delete(`auth/login/`).then(response => { return response.data.resultCode });
+    },
+
+    GetCaptchaUrl: () => {
+        return instance.get('security/get-captcha-url').then(response =>{ return response.data.url});
     }
+
 }

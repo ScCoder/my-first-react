@@ -6,6 +6,7 @@ import navBarReducer from "./navBarReducer";
 import usersReducer from "./usersReducer";
 import authReducer from "./authReducer";
 import {reducer as formReducer} from 'redux-form';
+import yodaReducer from "./yodaReducer";
 
 
 let redusers = combineReducers(
@@ -15,7 +16,8 @@ let redusers = combineReducers(
         navBar:navBarReducer,
         usersPage:usersReducer,
         auth: authReducer,
-        form: formReducer
+        form: formReducer,
+        yoda: yodaReducer
     }
 )
 

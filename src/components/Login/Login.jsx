@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 import {LoginThunk} from '../../redux/authReducer';
 import {Redirect} from 'react-router-dom';
 import Error from '../Common/Error';
+import { tsPropertySignature } from '@babel/types';
 
 const minLength5 = minLengthValidatorCreator(5);
 
-const LoginForm = ({handleSubmit,error}) => {
+const LoginForm = ({handleSubmit,error,captchaUrl}) => {
     return (
         <form onSubmit={handleSubmit}>
             <Error error = {error} />
@@ -21,6 +22,10 @@ const LoginForm = ({handleSubmit,error}) => {
             </div>
             <div>
                 <Field name='rememberMe' type={'checkbox'} component='input'  />Remember me
+            </div>
+            <div>
+            {captchaUrl&& <img src={captchaUrl}/>}
+            {captchaUrl&& <Field name='captcha' placeholder='Input symbols' component={Input}  validate = {[required]} />}
             </div>
             <div>
                 <button>Login</button>
@@ -36,11 +41,11 @@ const LoginForm = ({handleSubmit,error}) => {
 
 const LoginReduxForm = reduxForm({form: 'login'})(LoginForm);
 
-const Login = ({isAuth,LoginThunk,currentUserId}) => {
+const Login = ({isAuth,LoginThunk,currentUserId,captchaUrl}) => {
 
     const onLogin = (values) =>{
 
-        LoginThunk(values.login,values.password,values.rememberMe);
+        LoginThunk(values.login,values.password,values.rememberMe,values.captcha);
         
     }
 
@@ -53,7 +58,7 @@ const Login = ({isAuth,LoginThunk,currentUserId}) => {
                 <h1>LOGIN {!isAuth && 'NOT'} {isAuth && 'TRUE'} </h1>
             </div>
             <div>
-                <LoginReduxForm onSubmit={onLogin}/>
+                <LoginReduxForm onSubmit={onLogin} captchaUrl={captchaUrl}/>
             </div>
         </div>
     )
@@ -63,7 +68,8 @@ const Login = ({isAuth,LoginThunk,currentUserId}) => {
 const mstp = (state) =>{
     return {
         isAuth: state.auth.isAuth,
-        currentUserId: state.auth.userId
+        currentUserId: state.auth.userId,
+        captchaUrl: state.auth.captchaUrl
     };
 }
 
